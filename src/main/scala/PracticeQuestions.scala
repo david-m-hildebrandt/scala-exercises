@@ -1,5 +1,7 @@
 package questions
 
+// http://aperiodic.net/phil/scala/s-99/
+
 object PracticeQuestions {
 
   /*
@@ -14,6 +16,18 @@ object PracticeQuestions {
     case x :: Nil => x
     case _ :: tail => last(tail)
   }
+
+  def avg(as: List[Double]): Any = {
+
+    def doAverage(acc: Double, n: Int, as: List[Double]) : Double = as match {
+      case Nil | null => throw new IllegalArgumentException("List is empty or null")
+      case x :: Nil => (acc + x)/(n+1)
+      case x :: tail => doAverage(acc + x, n + 1, tail)
+    }
+
+    doAverage(0, 0, as)
+  }
+
 
   /*
     P02 (*) Find the last but one element of a list.
@@ -345,6 +359,8 @@ object PracticeQuestions {
     if (s >= e) throw new IllegalArgumentException("The value s must be less than or equal to e")
     as.drop(s).take(e - s)
   }
+
+
 
   /*
     P19 (**) Rotate a list N places to the left.
