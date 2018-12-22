@@ -72,7 +72,6 @@ class PracticeQuestionsSuite extends FunSuite {
       assert(kth(6, list) == 0)
     }
 
-
   }
 
   test("P04: length(as: List[Any])") {
@@ -90,9 +89,9 @@ class PracticeQuestionsSuite extends FunSuite {
 
   test("P05: reverse(l: List[Any]): List[Any]") {
 
-    assertThrows[IllegalArgumentException] {
-      assert(reverse(null) == List())
-    }
+    //    assertThrows[IllegalArgumentException] {
+    //      assert(reverse(null) == List())
+    //    }
 
     val list = List(1, 1, 2, 3, 5, 8)
     assert(reverse(list) == List(8, 5, 3, 2, 1, 1), "Should be reversed")
@@ -229,17 +228,25 @@ class PracticeQuestionsSuite extends FunSuite {
 
   test("P15: duplicateN[T](n: Int, ts: List[T]): List[T] ") {
 
-    assertThrows[IllegalArgumentException] {
-      assert(duplicateN(0, null) == List())
-    }
-    assertThrows[IllegalArgumentException] {
-      assert(duplicateN(-1, List()) == List(), "Should be List()")
-    }
-    assert(duplicateN(2, List()) == List(), "Should be List()")
-    assert(duplicateN(3, List('a)) == List('a, 'a, 'a))
-    assert(duplicateN(2, List('a, 'b, 'c, 'd, 'e)) == List('a, 'a, 'b, 'b, 'c, 'c, 'd, 'd, 'e, 'e))
-    assert(duplicateN(2, List('a, 'b, 1, "h")) == List('a, 'a, 'b, 'b, 1, 1, "h", "h"))
-    assert(duplicateN(1, List('a, 'b, 1, "h")) == List('a, 'b, 1, "h"))
+    // this is a special eta expansion
+    val dN = duplicateN(_ : Int,_ : List[Any])
+    val dN2 = duplicateN2(_ : Int,_ : List[Any])
+
+    var fList = List(dN, dN2)
+
+    fList.foreach(f => {
+      assertThrows[IllegalArgumentException] {
+        assert(f(0, null) == List())
+      }
+      assertThrows[IllegalArgumentException] {
+        assert(f(-1, List()) == List(), "Should be List()")
+      }
+      assert(f(2, List()) == List(), "Should be List()")
+      assert(f(3, List('a)) == List('a, 'a, 'a))
+      assert(f(2, List('a, 'b, 'c, 'd, 'e)) == List('a, 'a, 'b, 'b, 'c, 'c, 'd, 'd, 'e, 'e))
+      assert(f(2, List('a, 'b, 1, "h")) == List('a, 'a, 'b, 'b, 1, 1, "h", "h"))
+      assert(f(1, List('a, 'b, 1, "h")) == List('a, 'b, 1, "h"))
+    })
   }
 
   test("P16: drop(n: Int, as: List[Any]): List[Any] ") {
@@ -347,9 +354,9 @@ class PracticeQuestionsSuite extends FunSuite {
 
     val list = List('a, 'b, 'c, 'd)
 
-    assert(removeAt(0, list) ==  (List('b, 'c, 'd),'a))
-    assert(removeAt(3, list) ==  (List('a, 'b, 'c),'d))
-    assert(removeAt(2, list) ==  (List('a, 'b, 'd),'c))
+    assert(removeAt(0, list) == (List('b, 'c, 'd), 'a))
+    assert(removeAt(3, list) == (List('a, 'b, 'c), 'd))
+    assert(removeAt(2, list) == (List('a, 'b, 'd), 'c))
 
   }
 

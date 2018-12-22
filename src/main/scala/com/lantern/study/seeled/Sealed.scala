@@ -8,14 +8,14 @@ object Green extends Colour
 
 object Blue extends Colour
 
-sealed class FamilyMember
+//sealed class FamilyMember // will give warning if not all cases are handled
+class FamilyMember
 
 object David extends FamilyMember
 
 object Suzi extends FamilyMember
 
 object Landon extends FamilyMember
-
 
 object Seeled {
 
