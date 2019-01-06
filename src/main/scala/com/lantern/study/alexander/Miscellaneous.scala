@@ -5,7 +5,7 @@ import scala.collection.mutable.ArrayBuffer
 
 object Miscellaneous {
 
-  def doForLoops = {
+  def doForLoops(): Unit = {
 
     val s = "david hildebrandt"
     for (
@@ -25,7 +25,7 @@ object Miscellaneous {
 
   }
 
-  def doStringRegex() = {
+  def doStringRegex(): Unit = {
 
     val regEx = "[0-9]+".r
 
@@ -41,7 +41,7 @@ object Miscellaneous {
 
   // Special case
   // unapply is called on pattern(number, subject)
-  def doPatternMatch = {
+  def doPatternMatch : Unit = {
 
     val pattern = "([0-9]+) ([A-Za-z]+)".r
 
@@ -52,7 +52,7 @@ object Miscellaneous {
 
   }
 
-  def doStringsAsArrays = {
+  def doStringsAsArrays : Unit = {
 
     val subject = "Landon Hildebrandt"
     for (i <- 0 until subject.length) print(subject(i))
@@ -76,7 +76,7 @@ object Miscellaneous {
     println("1010".toInt(2))
   }
 
-  def doNumberValidityChecks = {
+  def doNumberValidityChecks : Unit = {
     println(1000.isValidByte)
     println(1000.isValidLong)
     println((10: Byte).isValidByte) // type follows 10:Byte
@@ -636,6 +636,7 @@ object Miscellaneous {
     } println(fibs(i))
 
     def square(v: BigInt): BigInt = v * v
+
     lazy val squareStream: Stream[(BigInt, BigInt)] = (BigInt(0), BigInt(0)) #:: squareStream.map(
       t => {
         val next = t._1 + 1
@@ -647,9 +648,10 @@ object Miscellaneous {
       i <- 0 to 10
     } println(squareStream(i))
 
-    def fibProdStream : Stream[BigInt] = {
-      def fps(v1 : BigInt, v2: BigInt) : Stream[BigInt] = v1 #:: fps(v2, v1 * v2)
-      fps(1,2)
+    def fibProdStream: Stream[BigInt] = {
+      def fps(v1: BigInt, v2: BigInt): Stream[BigInt] = v1 #:: fps(v2, v1 * v2)
+
+      fps(1, 2)
     }
 
     val fps = fibProdStream
@@ -659,8 +661,6 @@ object Miscellaneous {
     } println(fps(i))
 
     val fpsi = fps.iterator
-
-
 
 
   }
