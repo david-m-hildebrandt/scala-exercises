@@ -1,9 +1,10 @@
 package com.lantern.study.typeclasstag
 
 import scala.reflect.ClassTag
-import scala.reflect.runtime.universe._ // for TypeTag
 
 object TypeClassTag {
+
+  import scala.reflect.runtime.universe._
 
   // implicit is NOT required here : (implicit tag: ClassTag[T])
   // the compiler will add it since a Type parameter is used [T]

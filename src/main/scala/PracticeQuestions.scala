@@ -17,12 +17,13 @@ object PracticeQuestions {
       case head :: tail => last(tail)
     }
 
-  def avg(as: List[Double]): Any = {
 
-    def doAverage(acc: Double, n: Int, as: List[Double]): Double = as match {
+  def avg(as: List[Double]): Double =  {
+
+    def doAverage (acc: Double, n: Int, as: List[Double]) : Double = as match {
       case Nil | null => throw new IllegalArgumentException("List is empty or null")
       case x :: Nil => (acc + x) / (n + 1)
-      case x :: tail => doAverage(acc + x, n + 1, tail)
+      case x :: tail => doAverage(acc +x, n+1, tail)
     }
 
     doAverage(0, 0, as)

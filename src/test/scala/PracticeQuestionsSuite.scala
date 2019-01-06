@@ -18,6 +18,14 @@ class PracticeQuestionsSuite extends FunSuite {
     }
   }
 
+  test("avg: ") {
+
+    val list = List(1.0, 2.0, 3.0)
+    assert(avg(list) == 2.0, "Should be 2.0")
+
+  }
+
+
 
   test("P01: last(as: List[Any])") {
 

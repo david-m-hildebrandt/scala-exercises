@@ -2,7 +2,6 @@ package com.lantern.study.im
 
 import scala.reflect.ClassTag
 
-
 case class Data(a: Int)
 
 object ImplicitWork extends App {
