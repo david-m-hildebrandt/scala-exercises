@@ -7,13 +7,17 @@ object Miscellaneous {
 
   def doForLoops(): Unit = {
 
+    // without yield, nothing is yielded, it is us iterated
     val s = "david hildebrandt"
-    for (
+    val a = for (
       c <- s.filter(_ != 'i')
       if c != 'a'
-    ) println(c)
+    ) yield {
+      c
+    }
+    println(a.toUpperCase().mkString(""))
 
-    s.filter(_ != 'a').foreach(println)
+    //    s.filter(_ != 'a').foreach(println)
 
     val res = for (
       c <- s.toUpperCase
@@ -24,6 +28,18 @@ object Miscellaneous {
     println(res)
 
   }
+
+  /**
+    * Regular Expressions
+    * Note the .r following the regular expression pattern
+    *
+    * val regEx = "[0-9]+".r
+    *
+    * Note also this construction
+    * regEx.findAllIn(address)
+    * regEx.findAllIn(address)
+    *
+    */
 
   def doStringRegex(): Unit = {
 
@@ -39,27 +55,40 @@ object Miscellaneous {
     }
   }
 
-  // Special case
-  // unapply is called on pattern(number, subject)
-  def doPatternMatch : Unit = {
+  /**
+    * The pattern has used groups, which may be used
+    * in the unapply
+    * pattern(number, subject)
+    */
+  def doPatternMatch: Unit = {
 
     val pattern = "([0-9]+) ([A-Za-z]+)".r
 
+    // unapply is available on the regular expression construction
     val pattern(number, subject) = "101 Dalmations"
 
     println(s"Number: ${number}")
     println(s"Subject: ${subject}")
 
+    // 101 - 53 Mount Pleasant Ave
+    val pattern2 = "([0-9]+) [-]? ([0-9]+) ([A-Za-z ]+)".r
+    val pattern2(unit, streetNumber, streetName) = "101 - 53 Mount Pleasant Ave"
+
+    println(s"Unit: ${unit}")
+    println(s"Number: ${streetNumber}")
+    println(s"Street: ${streetName}")
   }
 
-  def doStringsAsArrays : Unit = {
-
+  def doStringsAsArrays: Unit = {
     val subject = "Landon Hildebrandt"
     for (i <- 0 until subject.length) print(subject(i))
     println
   }
 
-  // Special case too
+  /**
+    *
+    *
+    **/
   implicit class StringModifier(s: String) {
     def increment = s.map(c => (c + 1).toChar)
 
@@ -76,7 +105,7 @@ object Miscellaneous {
     println("1010".toInt(2))
   }
 
-  def doNumberValidityChecks : Unit = {
+  def doNumberValidityChecks: Unit = {
     println(1000.isValidByte)
     println(1000.isValidLong)
     println((10: Byte).isValidByte) // type follows 10:Byte
@@ -106,6 +135,29 @@ object Miscellaneous {
     }
   }
 
+  def doControlStructure: Unit = {
+
+    handleExceptions(println(1))
+    handleExceptions(println(1 / 0))
+    handleExceptions(println(0))
+
+    handleExceptions {
+      println(2 / 0)
+    }
+  }
+
+
+  def handle[A <: Any](f: A => A)(a: A): Option[A] = {
+    try {
+      Some(f(a))
+    } catch {
+      case e: RuntimeException => None
+    }
+  }
+
+
+
+
 
   def doSwitchDemo = {
     val i = 2
@@ -119,17 +171,6 @@ object Miscellaneous {
     println(out)
   }
 
-  def doControlStructure: Unit = {
-
-    handleExceptions(println(1))
-    handleExceptions(println(1 / 0))
-    handleExceptions(println(0))
-
-    handleExceptions {
-      println(2 / 0)
-    }
-
-  }
 
   sealed trait Command
 
@@ -158,9 +199,12 @@ object Miscellaneous {
     process(jump)
   }
 
+
   def doPatternMatchingAgain = {
 
     def matchIt[T](t: T) = t match {
+      // v@T means alias v at matched value T
+      case a@Array(1, 2) => println(s"Found array: Array(${a.mkString(",")})")
       case list@List(1) => println(s"List(1): ${list}")
       case list@List(1, _, 3) if list.contains(2) => println(s"List(1,2,3)")
       case List(a, _, _) => println("List(a,_,_)")
@@ -177,6 +221,8 @@ object Miscellaneous {
     matchIt(List(1, 2, 3))
     matchIt(Array(Array(Array(1))))
     matchIt(Array(Array(1)))
+    matchIt(Array(1, 2))
+
 
   }
 
@@ -217,7 +263,7 @@ object Miscellaneous {
 
   }
 
-  def doConstructorDefaults: Unit = {
+  def doConstructorDefaults(): Unit = {
 
     class Default(var b: Int = 2000)
 
@@ -225,7 +271,7 @@ object Miscellaneous {
 
   }
 
-  def doAbstractClassVersusTrait: Unit = {
+  def doAbstractClassVersusTrait(): Unit = {
 
     // abstract may take a parameter
     // could not be mixed
@@ -244,7 +290,7 @@ object Miscellaneous {
 
   }
 
-  def doDefiningEquals = {
+  def doDefiningEquals(): Unit = {
 
     case class Colour(name: String) {
       override def equals(other: Any): Boolean = {
@@ -305,7 +351,11 @@ object Miscellaneous {
     printAll("a", 1)
     val l = List("a", 2)
     printAll(l: _*)
-
+    val a = Array("a", 'c', 3, 2.3)
+    // this will not expand the argument set
+    printAll(a)
+    // this will expand the argument set in the Array
+    printAll(a: _*)
   }
 
   def doImportRenaming = {
@@ -363,6 +413,7 @@ object Miscellaneous {
 
     case class Me(name: String) extends TakeNotice
     Me("Hillary")
+    ()
   }
 
 
@@ -667,46 +718,48 @@ object Miscellaneous {
 
   def main(a: Array[String]): Unit = {
 
-    /*    println("Hello")
-        doForLoops
-        doStringRegex()
-        doPatternMatch
-        doStringsAsArrays
-        doImplicitString
-        doNumberValidityChecks
-        doGeneratorsAndGuards
-        doControlStructure
-        doSwitchDemo
-        doCommandProcessing
-        doPatternMatchingAgain
-        doAccessors
-        doAuxilliaryConstructors
-        doConstructorDefaults
-        doDefiningEquals
-        doSuperInvocations
-        doUseDoTuple
-        doVarArgAdaptation
-        doImportRenaming
-        doTraitCreationNotice
-
-        println(Solution.twoSum(Array(1, 9), 10))
-        println(Solution.addTwoNumbers(null, null))
-
-        println(reverse(321))
-        println(reverse(320))
-        println(reverse(-123))
-        doCallback(sayHello)
-        println(doCallbackForInt(makeItADouble, 3))
-        println(List(1, 2, 3).map(makeItADouble))
-        doClosureStudy()
-        doPartialStudy
-        doCollectionStudy
-        doEnumerationStudy
-        doTupleStudy
-        doArrayStudy
-
+    //    doForLoops
+    //    doStringRegex()
+    // doPatternMatch
+    /*
+    doStringsAsArrays
+    doImplicitString
+    doNumberValidityChecks
+    doGeneratorsAndGuards
+    doControlStructure
+    doSwitchDemo
+    doCommandProcessing
     */
-    doStreamStudy
+    //doPatternMatchingAgain
+    /*doAccessors
+    doAuxilliaryConstructors
+    doConstructorDefaults
+    doDefiningEquals
+    doSuperInvocations
+    doUseDoTuple
+    */
+    doVarArgAdaptation
+    /*doImportRenaming
+    doTraitCreationNotice
+
+    println(Solution.twoSum(Array(1, 9), 10))
+    println(Solution.addTwoNumbers(null, null))
+
+    println(reverse(321))
+    println(reverse(320))
+    println(reverse(-123))
+    doCallback(sayHello)
+    println(doCallbackForInt(makeItADouble, 3))
+    println(List(1, 2, 3).map(makeItADouble))
+    doClosureStudy()
+    doPartialStudy
+    doCollectionStudy
+    doEnumerationStudy
+    doTupleStudy
+    doArrayStudy
+
+*/
+    //    doStreamStudy
   }
 
 }

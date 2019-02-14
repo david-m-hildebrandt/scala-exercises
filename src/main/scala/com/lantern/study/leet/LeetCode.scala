@@ -1,4 +1,5 @@
-package com.lantern.study.leetcode
+package com.lantern.study.leet
+
 
 
 object LeetCode {
@@ -42,4 +43,6 @@ object LeetCode {
     //    println(lengthOfLongestSubstring("abac"))
     println(lengthOfLongestSubstring("dvdf"))
   }
+
+
 }

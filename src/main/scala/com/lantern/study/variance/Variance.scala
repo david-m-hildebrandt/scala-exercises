@@ -18,10 +18,13 @@ object Variance {
   def main(a: Array[String]): Unit = {
 
     covariant(new Co[Cow]) // Cow is child to Animal, allowed by Co[+A] and Co[Animal], so covariant
+    covariant(new Co[Animal]) // Animal is top of hierarchy, allowed by Co[+A] and Co[Animal]
     //covariant(new Co[Animate]) // Animate is parent to Animal, not allowed by Co[+A]
 
     // contraVariant(new Contra[Cow]) // Cow is child to Animal, not allowed by Contra[-A]
     contraVariant(new Contra[Animate]) // Animate is parent to Animal, allowed by Contra[-A] and Contra[Animal]
   }
+
+  // TODO
 
 }

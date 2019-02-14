@@ -3,6 +3,7 @@ package com.lantern.study.traitversusabstract
 object TraitVersusAbstract {
 
   trait Mass[T] {
+    val x = 1
     def getVal2 : T
   }
 
